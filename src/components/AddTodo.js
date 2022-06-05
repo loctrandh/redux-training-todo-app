@@ -22,7 +22,8 @@ const AddTodo = ({ onAdd }) => {
 
     const newTodo = {
       id: nanoid(),
-      body: newValue,
+      content: newValue,
+      completed: false,
     };
 
     onAdd(newTodo);
