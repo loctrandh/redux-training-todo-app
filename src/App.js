@@ -1,23 +1,23 @@
 import {
   Box,
   ChakraProvider,
+  extendTheme,
   Grid,
   Heading,
-  extendTheme,
   VStack,
 } from '@chakra-ui/react';
+import AddTodo from 'components/AddTodo';
+import { ColorModeSwitcher } from 'components/ColorModeSwitcher';
+import CompletedList from 'components/CompletedList';
+import ToDoList from 'components/ToDoList';
 import React, { useState } from 'react';
-import { ColorModeSwitcher } from './components/ColorModeSwitcher';
-import AddTodo from './components/AddTodo';
-import CompletedList from './components/CompletedList';
-import ToDoList from './components/ToDoList';
 
 function App() {
   const initialTodo = [
     { id: 1, content: 'Redux', completed: false },
     { id: 2, content: 'React Redux', completed: false },
     { id: 3, content: 'Redux Middleware', completed: false },
-    { id: 4, content: 'Redux Packages', completed: false },
+    { id: 4, content: 'Redux Toolkit', completed: false },
   ];
   const initialColorMode = 'dark';
 

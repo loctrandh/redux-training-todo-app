@@ -11,12 +11,14 @@ import React from 'react';
 import { FaCheck } from 'react-icons/fa';
 
 const ToDoList = ({ data, onComplete }) => {
+  if (!data.length) {
+    return (
+      <Badge colorScheme={'green'} p={'4'} borderRadius={'lg'}>
+        No Todos, huray!!!
+      </Badge>
+    );
+  }
 
-  if (!data.length) return (
-    <Badge colorScheme={'green'} p={'4'} borderRadius={'lg'}>
-      No Todos, huray!!!
-    </Badge>
-  )
   return (
     <VStack
       divider={<StackDivider />}
@@ -35,8 +37,8 @@ const ToDoList = ({ data, onComplete }) => {
           <IconButton
             icon={<FaCheck />}
             isRound={true}
-            aria-label='Complete'
-            title='Complete'
+            aria-label="Complete"
+            title="Complete"
             onClick={() => onComplete(todo.id)}
           ></IconButton>
         </HStack>
