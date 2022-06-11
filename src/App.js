@@ -10,40 +10,30 @@ import AddTodo from 'components/AddTodo';
 import { ColorModeSwitcher } from 'components/ColorModeSwitcher';
 import CompletedList from 'components/CompletedList';
 import ToDoList from 'components/ToDoList';
+import { getInitialColorMode } from 'reducers/theme/selectors';
+import { doAddTodo, doDeleteTodo, doToggleTodo } from 'reducers/todo/actions';
+import { getCompletedList, getTodosList } from 'reducers/todo/selectors';
 import store from 'store';
 
 function App() {
-  const initialColorMode = store.getState().themeState.colorMode;
-
   const handleToggleTodo = id => {
-    store.dispatch({
-      type: 'TODO_TOGGLE',
-      payload: id,
-    });
+    store.dispatch(doToggleTodo(id));
   };
 
   const handleDeleteTodo = id => {
-    store.dispatch({
-      type: 'TODO_DELETE',
-      payload: id,
-    });
+    store.dispatch(doDeleteTodo(id));
   };
 
   const handleAddTodo = todo => {
-    store.dispatch({
-      type: 'TODO_ADD',
-      payload: todo,
-    });
+    store.dispatch(doAddTodo(todo));
   };
 
   const config = {
-    initialColorMode,
+    initialColorMode: getInitialColorMode(store.getState()),
     useSystemColorMode: false,
   };
 
   const theme = extendTheme({ config });
-
-  const todos = store.getState().todoState;
 
   return (
     <ChakraProvider theme={theme}>
@@ -63,11 +53,11 @@ function App() {
             <AddTodo onAdd={handleAddTodo} />
 
             <ToDoList
-              data={todos.filter(x => !x.completed)}
+              data={getTodosList(store.getState())}
               onComplete={handleToggleTodo}
             />
             <CompletedList
-              data={todos.filter(x => x.completed)}
+              data={getCompletedList(store.getState())}
               onUndo={handleToggleTodo}
               onDelete={handleDeleteTodo}
             />

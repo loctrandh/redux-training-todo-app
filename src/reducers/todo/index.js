@@ -1,3 +1,5 @@
+import { TODO_ADD, TODO_DELETE, TODO_TOGGLE } from './types';
+
 const INITIAL_STATE = [
   { id: 1, content: 'Redux Testing', completed: false },
   { id: 2, content: 'React Redux', completed: false },
@@ -7,13 +9,13 @@ const INITIAL_STATE = [
 
 function reducer(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case 'TODO_ADD':
+    case TODO_ADD:
       return applyAddTodo(state, action);
 
-    case 'TODO_TOGGLE':
+    case TODO_TOGGLE:
       return applyToggleTodo(state, action);
 
-    case 'TODO_DELETE':
+    case TODO_DELETE:
       return applyDeleteTodo(state, action);
 
     default:
