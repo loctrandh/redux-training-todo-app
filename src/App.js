@@ -10,33 +10,30 @@ import AddTodo from 'components/AddTodo';
 import { ColorModeSwitcher } from 'components/ColorModeSwitcher';
 import CompletedList from 'components/CompletedList';
 import ToDoList from 'components/ToDoList';
-import React, { useState } from 'react';
+import store from 'store';
 
 function App() {
-  const initialTodo = [
-    { id: 1, content: 'Redux', completed: false },
-    { id: 2, content: 'React Redux', completed: false },
-    { id: 3, content: 'Redux Middleware', completed: false },
-    { id: 4, content: 'Redux Toolkit', completed: false },
-  ];
-  const initialColorMode = 'dark';
-
-  const [todos, setTodos] = useState(initialTodo);
+  const initialColorMode = store.getState().themeState.colorMode;
 
   const handleToggleTodo = id => {
-    setTodos(
-      todos.map(todo =>
-        todo.id !== id ? todo : { ...todo, completed: !todo.completed }
-      )
-    );
+    store.dispatch({
+      type: 'TODO_TOGGLE',
+      payload: id,
+    });
   };
 
   const handleDeleteTodo = id => {
-    setTodos(todos.filter(item => item.id !== id));
+    store.dispatch({
+      type: 'TODO_DELETE',
+      payload: id,
+    });
   };
 
   const handleAddTodo = todo => {
-    setTodos([...todos, todo]);
+    store.dispatch({
+      type: 'TODO_ADD',
+      payload: todo,
+    });
   };
 
   const config = {
@@ -45,6 +42,8 @@ function App() {
   };
 
   const theme = extendTheme({ config });
+
+  const todos = store.getState().todoState;
 
   return (
     <ChakraProvider theme={theme}>
