@@ -1,4 +1,5 @@
 import {
+  Badge,
   Box,
   ChakraProvider,
   extendTheme,
@@ -12,20 +13,14 @@ import CompletedList from 'components/CompletedList';
 import ToDoList from 'components/ToDoList';
 import { getInitialColorMode } from 'reducers/theme/selectors';
 import { connect } from 'react-redux';
+import { Fragment, useEffect } from 'react';
+import { doFetchTodo } from 'reducers/todo/actions';
+import { getTodoError } from 'reducers/todo/selectors';
 
-function App({ themeState }) {
-  // remove because we lifted connection
-  // const handleToggleTodo = id => {
-  //   onToggleTodo(id);
-  // };
-
-  // const handleDeleteTodo = id => {
-  //   onDeleteTodo(id);
-  // };
-
-  // const handleAddTodo = todo => {
-  //   onAddTodo(todo);
-  // };
+function App({ error, themeState, onFetch }) {
+  useEffect(() => {
+    onFetch();
+  }, []);
 
   const config = {
     initialColorMode: getInitialColorMode(themeState),
@@ -50,11 +45,19 @@ function App({ themeState }) {
               Todo Application
             </Heading>
 
-            <AddTodo />
+            {error ? (
+              <Badge colorScheme={'red'} p={'4'} borderRadius={'lg'}>
+                {error}
+              </Badge>
+            ) : (
+              <Fragment>
+                <AddTodo />
 
-            <ToDoList />
+                <ToDoList />
 
-            <CompletedList />
+                <CompletedList />
+              </Fragment>
+            )}
           </VStack>
         </Grid>
       </Box>
@@ -64,7 +67,12 @@ function App({ themeState }) {
 
 const mapStateToProps = state => ({
   themeState: state.themeState,
+  error: getTodoError(state.todoState),
 });
+
+const mapDispatchToProps = {
+  onFetch: doFetchTodo,
+};
 
 // Original version
 // const mapDispatchToProps = dispatch => ({
@@ -77,4 +85,4 @@ const mapStateToProps = state => ({
 // useSelector
 // useReducer
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -3,17 +3,22 @@ import {
   HStack,
   IconButton,
   Spacer,
+  Spinner,
   StackDivider,
   Text,
   VStack,
 } from '@chakra-ui/react';
 import React from 'react';
 import { FaCheck } from 'react-icons/fa';
-import { getTodosList } from 'reducers/todo/selectors';
+import { getLoadingTodoList, getTodosList } from 'reducers/todo/selectors';
 import { connect } from 'react-redux';
 import { doToggleTodo } from 'reducers/todo/actions';
 
-const ToDoList = ({ data, onComplete }) => {
+const ToDoList = ({ loading, data, onComplete }) => {
+  if (loading) {
+    return <Spinner />;
+  }
+
   if (!data.length) {
     return (
       <Badge colorScheme={'green'} p={'4'} borderRadius={'lg'}>
@@ -52,6 +57,7 @@ const ToDoList = ({ data, onComplete }) => {
 
 const mapStateToProps = state => ({
   data: getTodosList(state.todoState),
+  loading: getLoadingTodoList(state.todoState),
 });
 
 const mapDispatchToProps = {
