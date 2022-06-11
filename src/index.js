@@ -5,23 +5,20 @@ import { createRoot } from 'react-dom/client';
 import store from 'store';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
+import { Provider } from 'react-redux';
 
 const container = document.getElementById('root');
 
 const root = createRoot(container);
 
-function render() {
-  root.render(
-    <Fragment>
-      <ColorModeScript />
+root.render(
+  <Fragment>
+    <ColorModeScript />
+    <Provider store={store}>
       <App />
-    </Fragment>
-  );
-}
-
-store.subscribe(render);
-
-render();
+    </Provider>
+  </Fragment>
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

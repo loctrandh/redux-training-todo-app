@@ -13,23 +13,23 @@ import ToDoList from 'components/ToDoList';
 import { getInitialColorMode } from 'reducers/theme/selectors';
 import { doAddTodo, doDeleteTodo, doToggleTodo } from 'reducers/todo/actions';
 import { getCompletedList, getTodosList } from 'reducers/todo/selectors';
-import store from 'store';
+import { connect } from 'react-redux';
 
-function App() {
+function App({ todoState, themeState, onAddTodo, onDeleteTodo, onToggleTodo }) {
   const handleToggleTodo = id => {
-    store.dispatch(doToggleTodo(id));
+    onToggleTodo(id);
   };
 
   const handleDeleteTodo = id => {
-    store.dispatch(doDeleteTodo(id));
+    onDeleteTodo(id);
   };
 
   const handleAddTodo = todo => {
-    store.dispatch(doAddTodo(todo));
+    onAddTodo(todo);
   };
 
   const config = {
-    initialColorMode: getInitialColorMode(store.getState()),
+    initialColorMode: getInitialColorMode(themeState),
     useSystemColorMode: false,
   };
 
@@ -53,11 +53,11 @@ function App() {
             <AddTodo onAdd={handleAddTodo} />
 
             <ToDoList
-              data={getTodosList(store.getState())}
+              data={getTodosList(todoState)}
               onComplete={handleToggleTodo}
             />
             <CompletedList
-              data={getCompletedList(store.getState())}
+              data={getCompletedList(todoState)}
               onUndo={handleToggleTodo}
               onDelete={handleDeleteTodo}
             />
@@ -68,4 +68,26 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = state => ({
+  todoState: state.todoState,
+  themeState: state.themeState,
+});
+
+const mapDispatchToProps = {
+  onAddTodo: doAddTodo,
+  onToggleTodo: doToggleTodo,
+  onDeleteTodo: doDeleteTodo,
+};
+
+// Original version
+// const mapDispatchToProps = dispatch => ({
+//   onAddTodo: todo => dispatch(doAddTodo(todo)),
+//   onToggleTodo: id => dispatch(doToggleTodo(id)),
+//   onDeleteTodo: id => dispatch(doDeleteTodo(id)),
+// });
+
+// Another way to get state & dispatch
+// useSelector
+// useReducer
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

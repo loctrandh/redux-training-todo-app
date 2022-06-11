@@ -1,1 +1,1 @@
-export const getInitialColorMode = ({ themeState }) => themeState.colorMode;
+export const getInitialColorMode = themeState => themeState.colorMode;
