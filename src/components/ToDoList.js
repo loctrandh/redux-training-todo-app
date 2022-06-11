@@ -12,7 +12,7 @@ import React from 'react';
 import { FaCheck } from 'react-icons/fa';
 import { getLoadingTodoList, getTodosList } from 'reducers/todo/selectors';
 import { connect } from 'react-redux';
-import { doToggleTodo } from 'reducers/todo/actions';
+import { doToggleTodo } from 'reducers/todo';
 
 const ToDoList = ({ loading, data, onComplete }) => {
   if (loading) {

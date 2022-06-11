@@ -12,7 +12,7 @@ import React from 'react';
 import { FaTrash, FaUndo } from 'react-icons/fa';
 import { getCompletedList } from 'reducers/todo/selectors';
 import { connect } from 'react-redux';
-import { doDeleteTodo, doToggleTodo } from 'reducers/todo/actions';
+import { doDeleteTodo, doToggleTodo } from 'reducers/todo';
 
 const CompletedList = ({ data, onUndo, onDelete }) => {
   if (!data.length) return null;

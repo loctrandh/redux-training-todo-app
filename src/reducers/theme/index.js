@@ -1,7 +1,12 @@
+import { createSlice } from '@reduxjs/toolkit';
+
 const INITIAL_STATE = {
-  colorMode: 'light',
+  colorMode: 'dark',
 };
 
-export default function reducer(state = INITIAL_STATE, _action) {
-  return state;
-}
+const themeSlide = createSlice({
+  name: 'themeReducer',
+  initialState: INITIAL_STATE,
+});
+
+export default themeSlide.reducer;

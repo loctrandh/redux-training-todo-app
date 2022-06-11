@@ -14,8 +14,8 @@ import ToDoList from 'components/ToDoList';
 import { getInitialColorMode } from 'reducers/theme/selectors';
 import { connect } from 'react-redux';
 import { Fragment, useEffect } from 'react';
-import { doFetchTodo } from 'reducers/todo/actions';
 import { getTodoError } from 'reducers/todo/selectors';
+import { doFetchTodo } from 'reducers/todo';
 
 function App({ error, themeState, onFetch }) {
   useEffect(() => {

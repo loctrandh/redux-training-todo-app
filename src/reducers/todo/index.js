@@ -1,11 +1,4 @@
-import {
-  TODO_ADD,
-  TODO_DELETE,
-  TODO_FETCH,
-  TODO_FETCH_ERROR,
-  TODO_FETCH_SUCCESS,
-  TODO_TOGGLE,
-} from './types';
+import { createSlice } from '@reduxjs/toolkit';
 
 const INITIAL_STATE = {
   error: null,
@@ -13,77 +6,41 @@ const INITIAL_STATE = {
   todos: [],
 };
 
-function reducer(state = INITIAL_STATE, action) {
-  switch (action.type) {
-    case TODO_ADD:
-      return applyAddTodo(state, action);
+const todoSlice = createSlice({
+  name: 'todoState',
+  initialState: INITIAL_STATE,
+  reducers: {
+    doAddTodo(state, action) {
+      state.todos.push(action.payload);
+    },
+    doToggleTodo(state, action) {
+      const todo = state.todos.find(x => x.id === action.payload);
+      todo.completed = !todo.completed;
+    },
+    doDeleteTodo(state, action) {
+      state.todos = state.todos.filter(todo => todo.id !== action.payload);
+    },
+    doFetchTodo(state, _action) {
+      state.loading = true;
+    },
+    doFetchTodoSuccess(state, action) {
+      state.todos = action.payload;
+      state.loading = false;
+    },
+    doFetchTodoError(state, action) {
+      state.error = action.payload;
+      state.loading = false;
+    },
+  },
+});
 
-    case TODO_TOGGLE:
-      return applyToggleTodo(state, action);
+export const {
+  doAddTodo,
+  doToggleTodo,
+  doDeleteTodo,
+  doFetchTodo,
+  doFetchTodoSuccess,
+  doFetchTodoError,
+} = todoSlice.actions;
 
-    case TODO_DELETE:
-      return applyDeleteTodo(state, action);
-
-    case TODO_FETCH:
-      return applyFetchTodo(state, action);
-
-    case TODO_FETCH_SUCCESS:
-      return applyTodos(state, action);
-
-    case TODO_FETCH_ERROR:
-      return applyFetchError(state, action);
-
-    default:
-      return state;
-  }
-}
-
-function applyAddTodo(state, action) {
-  return {
-    ...state,
-    todos: [...state.todos, action.payload],
-  };
-}
-
-function applyToggleTodo(state, action) {
-  return {
-    ...state,
-    todos: state.todos.map(todo =>
-      todo.id !== action.payload
-        ? todo
-        : { ...todo, completed: !todo.completed }
-    ),
-  };
-}
-
-function applyDeleteTodo(state, action) {
-  return {
-    ...state,
-    todos: state.todos.filter(todo => todo.id !== action.payload),
-  };
-}
-
-function applyTodos(state, action) {
-  return {
-    ...state,
-    todos: action.payload,
-    loading: false,
-  };
-}
-
-function applyFetchTodo(state, _action) {
-  return {
-    ...state,
-    loading: true,
-  };
-}
-
-function applyFetchError(state, action) {
-  return {
-    ...state,
-    loading: false,
-    error: action.payload,
-  };
-}
-
-export default reducer;
+export default todoSlice.reducer;
