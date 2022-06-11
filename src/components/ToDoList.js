@@ -9,6 +9,9 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import { FaCheck } from 'react-icons/fa';
+import { getTodosList } from 'reducers/todo/selectors';
+import { connect } from 'react-redux';
+import { doToggleTodo } from 'reducers/todo/actions';
 
 const ToDoList = ({ data, onComplete }) => {
   if (!data.length) {
@@ -47,4 +50,12 @@ const ToDoList = ({ data, onComplete }) => {
   );
 };
 
-export default ToDoList;
+const mapStateToProps = state => ({
+  data: getTodosList(state.todoState),
+});
+
+const mapDispatchToProps = {
+  onComplete: doToggleTodo,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ToDoList);

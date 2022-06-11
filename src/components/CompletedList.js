@@ -10,6 +10,9 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import { FaTrash, FaUndo } from 'react-icons/fa';
+import { getCompletedList } from 'reducers/todo/selectors';
+import { connect } from 'react-redux';
+import { doDeleteTodo, doToggleTodo } from 'reducers/todo/actions';
 
 const CompletedList = ({ data, onUndo, onDelete }) => {
   if (!data.length) return null;
@@ -18,7 +21,9 @@ const CompletedList = ({ data, onUndo, onDelete }) => {
     <VStack spacing={8} w={'100%'}>
       <Flex align="center" w={'100%'}>
         <Divider />
-        <Text whiteSpace={'nowrap'} paddingLeft={'4'} paddingRight={'4'}>Completed Tasks</Text>
+        <Text whiteSpace={'nowrap'} paddingLeft={'4'} paddingRight={'4'}>
+          Completed Tasks
+        </Text>
         <Divider />
       </Flex>
 
@@ -57,4 +62,13 @@ const CompletedList = ({ data, onUndo, onDelete }) => {
   );
 };
 
-export default CompletedList;
+const mapStateToProps = state => ({
+  data: getCompletedList(state.todoState),
+});
+
+const mapDispatchToProps = {
+  onUndo: doToggleTodo,
+  onDelete: doDeleteTodo,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CompletedList);

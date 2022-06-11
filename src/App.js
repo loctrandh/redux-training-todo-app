@@ -11,22 +11,21 @@ import { ColorModeSwitcher } from 'components/ColorModeSwitcher';
 import CompletedList from 'components/CompletedList';
 import ToDoList from 'components/ToDoList';
 import { getInitialColorMode } from 'reducers/theme/selectors';
-import { doAddTodo, doDeleteTodo, doToggleTodo } from 'reducers/todo/actions';
-import { getCompletedList, getTodosList } from 'reducers/todo/selectors';
 import { connect } from 'react-redux';
 
-function App({ todoState, themeState, onAddTodo, onDeleteTodo, onToggleTodo }) {
-  const handleToggleTodo = id => {
-    onToggleTodo(id);
-  };
+function App({ themeState }) {
+  // remove because we lifted connection
+  // const handleToggleTodo = id => {
+  //   onToggleTodo(id);
+  // };
 
-  const handleDeleteTodo = id => {
-    onDeleteTodo(id);
-  };
+  // const handleDeleteTodo = id => {
+  //   onDeleteTodo(id);
+  // };
 
-  const handleAddTodo = todo => {
-    onAddTodo(todo);
-  };
+  // const handleAddTodo = todo => {
+  //   onAddTodo(todo);
+  // };
 
   const config = {
     initialColorMode: getInitialColorMode(themeState),
@@ -50,17 +49,12 @@ function App({ todoState, themeState, onAddTodo, onDeleteTodo, onToggleTodo }) {
             >
               Todo Application
             </Heading>
-            <AddTodo onAdd={handleAddTodo} />
 
-            <ToDoList
-              data={getTodosList(todoState)}
-              onComplete={handleToggleTodo}
-            />
-            <CompletedList
-              data={getCompletedList(todoState)}
-              onUndo={handleToggleTodo}
-              onDelete={handleDeleteTodo}
-            />
+            <AddTodo />
+
+            <ToDoList />
+
+            <CompletedList />
           </VStack>
         </Grid>
       </Box>
@@ -69,15 +63,8 @@ function App({ todoState, themeState, onAddTodo, onDeleteTodo, onToggleTodo }) {
 }
 
 const mapStateToProps = state => ({
-  todoState: state.todoState,
   themeState: state.themeState,
 });
-
-const mapDispatchToProps = {
-  onAddTodo: doAddTodo,
-  onToggleTodo: doToggleTodo,
-  onDeleteTodo: doDeleteTodo,
-};
 
 // Original version
 // const mapDispatchToProps = dispatch => ({
@@ -90,4 +77,4 @@ const mapDispatchToProps = {
 // useSelector
 // useReducer
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);

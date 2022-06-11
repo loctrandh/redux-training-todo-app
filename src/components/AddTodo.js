@@ -1,6 +1,8 @@
 import { Button, HStack, Input, useToast } from '@chakra-ui/react';
 import { nanoid } from 'nanoid';
 import React, { useState } from 'react';
+import { doAddTodo } from 'reducers/todo/actions';
+import { connect } from 'react-redux';
 
 const AddTodo = ({ onAdd }) => {
   const [newValue, setNewValue] = useState('');
@@ -47,4 +49,8 @@ const AddTodo = ({ onAdd }) => {
   );
 };
 
-export default AddTodo;
+const mapDispatchToProps = {
+  onAdd: doAddTodo,
+};
+
+export default connect(null, mapDispatchToProps)(AddTodo);
